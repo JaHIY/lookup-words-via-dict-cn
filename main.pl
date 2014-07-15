@@ -90,6 +90,9 @@ sub color_print {
             #croak 'Cannot match anyting!';
         }
     }
+    if ($input !~ m{<br[[:space:]]/>[[:space:]]*\z}xms) {
+        print "\n";
+    }
 }
 
 sub look_up {
@@ -142,13 +145,13 @@ sub main {
     look_up( $word );
 }
 
-main( @ARGV );
+main;
 
 __END__
 
 =head1 NAME
 
-lookup - lookup words from dict.cn
+lookup - lookup words via dict.cn
 
 =head1 SYNOPSIS
 
