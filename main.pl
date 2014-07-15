@@ -61,13 +61,13 @@ sub color_print {
     pos $input = 0;
     while ( pos $input < length $input ) {
         if ( $input =~ m{\G<i>}gcxms ) {
-            print color 'blue';
+            print color 'italic magenta';
         }
         elsif ( $input =~ m{\G<em>}gcxms ) {
             print color 'bold yellow';
         }
         elsif ( $input =~ m{\G<font[^>]*>}gcxms ) {
-            print color 'cyan';
+            print color 'green';
         }
         elsif ( $input =~ m{\G<br[[:space:]]/>}gcxms ) {
             print "\n";
@@ -101,7 +101,7 @@ sub look_up {
     if ( defined $dict_hash_ref->{'e'} ) {
         print color 'bold';
         print 'Define ';
-        print color 'green';
+        print color 'yellow';
         print $word, "\n";
         print color 'reset';
         color_print( $dict_hash_ref->{'e'} );
@@ -116,7 +116,7 @@ sub look_up {
     if ( defined $dict_hash_ref->{'g'} ) {
         print color 'bold';
         print 'Sorry, ';
-        print color 'green';
+        print color 'yellow';
         print $word;
         print color 'reset';
         print color 'bold';
