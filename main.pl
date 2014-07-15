@@ -102,7 +102,10 @@ sub look_up {
         print color 'bold';
         print 'Define ';
         print color 'yellow';
-        print $word, "\n";
+        print $word;
+        print color 'reset';
+        print color 'bold';
+        print ':', "\n";
         print color 'reset';
         color_print( $dict_hash_ref->{'e'} );
         print "\n";
