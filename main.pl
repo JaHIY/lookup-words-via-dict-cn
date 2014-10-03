@@ -15,6 +15,7 @@ use LWP::UserAgent;
 use Pod::Usage;
 use Readonly;
 use Term::ANSIColor;
+use Term::ReadLine;
 
 Readonly my $USER_AGENT => q{Mozilla/5.0 (X11; Linux x86_64; rv:33.0) Gecko/20100101 Firefox/33.0};
 Readonly my $DICT_PAGE => q{http://dict.cn/en/search/?q=};
@@ -131,21 +132,27 @@ sub look_up {
 }
 
 sub main {
-    my %option;
-    GetOptions( 'help|h|?' => \$option{'help'},
-                'man'      => \$option{'man'},
+    my %option_of;
+    GetOptions( 'help|h|?' => \$option_of{'help'},
+                'man'      => \$option_of{'man'},
               );
-    if  ( $option{'help'} ) {
+    if  ( $option_of{'help'} ) {
         pod2usage 1;
     }
-    if ( $option{'man'} ) {
+    if ( $option_of{'man'} ) {
         pod2usage(-verbose => 2);
     }
     if ( @ARGV == 0 ) {
-        pod2usage 2;
+        my $term = Term::ReadLine->new('Dict.cn Console Version');
+        $term->ornaments(0);
+        while ( defined( my $word = $term->readline('> ') ) ) {
+            look_up( $word, \%option_of );
+            $term->addhistory($word);
+        }
+    } else {
+        my ( $word ) = join $SPACE, @ARGV;
+        look_up( $word );
     }
-    my ( $word ) = join $SPACE, @ARGV;
-    look_up( $word );
 }
 
 main;
@@ -166,7 +173,7 @@ Options:
 
 =head1 OPTIONS
 
-=over B
+=over
 
 =item B<-help>
 
