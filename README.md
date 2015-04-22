@@ -8,10 +8,10 @@
     * if you want the best experience, you should install [Term::ReadLine::Gnu](https://metacpan.org/pod/Term::ReadLine::Gnu).
 
 ## How to use:
-``` bash
-$ ./main.pl apple  
+```
+$ ./main.pl apple
 Define apple
-n.苹果, 珍宝, 家伙 
+n.苹果, 珍宝, 家伙
 
 Examples:
 1. My uncle has an apple orchard.
@@ -28,10 +28,10 @@ Examples:
    他是一个讨厌的家伙。
 
 ```
-``` bash
-$ ./main.pl apple pie                
+```
+$ ./main.pl apple pie
 Define apple pie
-苹果派 
+苹果派
 
 Examples:
 1. He went into the kitchen in search of food and wolfed down an apple pie.
@@ -44,7 +44,7 @@ Examples:
    苹果派和冰淇淋就行了。
 
 ```
-``` bash
+```
 $ ./main.pl applyed
 Sorry, applyed not found!
 Are you looking for:
@@ -60,7 +60,7 @@ Are you looking for:
 10. supplied
 
 ```
-``` bash
+```
 $ ./main.pl apple store
 Sorry, apple store not found!
 Are you looking for:
