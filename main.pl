@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use utf8;
+use utf8::all;
 use autodie;
 use 5.010;
 
@@ -40,7 +40,7 @@ sub get_json_for_definition_of {
                                           cookie_jar => { hide_cookie2 => 1 },
                                         );
     my $page_response = $user_agent->get( build_url_with( $DICT_PAGE_URI, {
-                q => $word,
+                q => encode( 'gbk', $word ),
             } ) );
 
     croak 'Cannot get page from dict.cn!' if not $page_response->is_success;
@@ -53,7 +53,7 @@ sub get_json_for_definition_of {
     my $ajax_response = $user_agent->post( $AJAX_PAGE_URI, {
         q => $word,
         s => 5,
-        t => Digest::MD5->new->add($word_token)->hexdigest,
+        t => Digest::MD5->new->add( encode( 'utf8', $word_token ) )->hexdigest,
     } );
 
     croak 'Cannot get json from dict.cn!' if not $ajax_response->is_success;

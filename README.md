@@ -4,6 +4,7 @@
  * Perl 5.10.0+
  * Required Modules:
     * [JSON](https://metacpan.org/pod/JSON)
+    * [utf8::all](https://metacpan.org/pod/utf8::all)
     * [URI](https://metacpan.org/pod/URI)
     * if you want the best experience, you should install [Term::ReadLine::Gnu](https://metacpan.org/pod/Term::ReadLine::Gnu).
 
