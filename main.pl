@@ -9,7 +9,7 @@ use 5.010;
 use Carp qw(croak);
 use Digest::MD5 ();
 use Encode qw(encode);
-use Getopt::Long;
+use Getopt::Long ();
 use JSON ();
 use LWP::UserAgent;
 use Pod::Usage;
@@ -115,14 +115,13 @@ sub look_up {
         color_print( $dict_hash_ref->{'s'} );
     }
     if ( defined $dict_hash_ref->{'g'} ) {
-        print "\n";
         print color 'bold';
         print 'Sorry, ';
         print color 'yellow';
         print $word;
         print color 'reset';
         print color 'bold';
-        print ' not found!', "\n";
+        print ' not found!', "\n\n";
         print 'Are you looking for:', "\n";
         print color 'reset';
         color_print( $dict_hash_ref->{'g'} );
@@ -131,9 +130,13 @@ sub look_up {
 
 sub main {
     my %option_of;
-    GetOptions( 'help|h|?' => \$option_of{'help'},
-                'man'      => \$option_of{'man'},
-              );
+    my $getopt = Getopt::Long::Parser->new;
+    croak 'Cannot parse options!' if not $getopt->getoptionsfromarray(
+        \@_,
+        \%option_of,
+        'help|h|?',
+        'man',
+    );
     if  ( $option_of{'help'} ) {
         pod2usage 1;
     }
@@ -153,7 +156,7 @@ sub main {
     }
 }
 
-main;
+main( @ARGV );
 
 __END__
 
