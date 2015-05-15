@@ -6,11 +6,11 @@ use utf8::all;
 use autodie;
 use 5.010;
 
-use Carp;
-use Digest::MD5;
-use Encode;
+use Carp qw(croak);
+use Digest::MD5 ();
+use Encode qw(encode);
 use Getopt::Long;
-use JSON;
+use JSON ();
 use LWP::UserAgent;
 use Pod::Usage;
 use Term::ANSIColor;
@@ -64,40 +64,32 @@ sub get_json_for_definition_of {
 
 sub color_print {
     my ( $input ) = @_;
-    pos $input = 0;
-    while ( pos $input < length $input ) {
-        if ( $input =~ m{\G<i>}gcxms ) {
-            print color 'italic magenta';
-        }
-        elsif ( $input =~ m{\G<em>}gcxms ) {
-            print color 'bold yellow';
-        }
-        elsif ( $input =~ m{\G<font[^>]*>}gcxms ) {
-            print color 'green';
-        }
-        elsif ( $input =~ m{\G<br[[:space:]]/>}gcxms ) {
-            print "\n";
-        }
-        elsif ( $input =~ m{\G</[^>]+>}gcxms ) {
-            print color 'reset';
-        }
-        elsif ( $input =~ m{\G<[^>]+>}gcxms ) {
-            next;
-        }
-        elsif ( $input =~ m{\G\n+}gcxms ) {
-            next;
-        }
-        elsif ( $input =~ m{\G&nbsp;}gcxms ) {
-            print $SPACE;
-        }
-        else {
-            print substr($input, pos($input), 1);
-            pos $input += 1;
-        }
-    }
-    if ($input !~ m{<br[[:space:]]/>[[:space:]]*\z}xms) {
-        print "\n";
-    }
+    my $p = HTML::Parser->new(
+        api_version => 3,
+        handlers => {
+            start => [ sub {
+                    my ( $tagname ) = @_;
+                    if ( $tagname eq 'i' ) {
+                        print color 'italic magenta';
+                    } elsif ( $tagname eq 'em' ) {
+                        print color 'bold yellow';
+                    } elsif ( $tagname eq 'font' ) {
+                        print color 'green';
+                    } elsif ( $tagname eq 'br' ) {
+                        print "\n"
+                    }
+                }, 'tagname' ],
+            end   => [ sub {
+                    print color 'reset';
+                }, undef ],
+            text  => [ sub {
+                    my ( $dtext ) = @_;
+                    print $dtext;
+                }, 'dtext' ],
+        },
+    );
+    $input =~ s/\R//g;
+    $p->parse( $input );
 }
 
 sub look_up {
@@ -116,12 +108,14 @@ sub look_up {
         print "\n";
     }
     if ( defined $dict_hash_ref->{'s'} ) {
+        print "\n";
         print color 'bold';
         print 'Examples:', "\n";
         print color 'reset';
         color_print( $dict_hash_ref->{'s'} );
     }
     if ( defined $dict_hash_ref->{'g'} ) {
+        print "\n";
         print color 'bold';
         print 'Sorry, ';
         print color 'yellow';
@@ -136,9 +130,6 @@ sub look_up {
 }
 
 sub main {
-    binmode *STDIN,  ':encoding(utf8)';
-    binmode *STDOUT, ':encoding(utf8)';
-    binmode *STDERR, ':encoding(utf8)';
     my %option_of;
     GetOptions( 'help|h|?' => \$option_of{'help'},
                 'man'      => \$option_of{'man'},

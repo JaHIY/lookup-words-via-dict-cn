@@ -3,6 +3,7 @@
 ## Environment:
  * Perl 5.10.0+
  * Required Modules:
+    * [HTML::Parser](https://metacpan.org/pod/HTML::Parser)
     * [JSON](https://metacpan.org/pod/JSON)
     * [utf8::all](https://metacpan.org/pod/utf8::all)
     * [URI](https://metacpan.org/pod/URI)
