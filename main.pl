@@ -10,6 +10,7 @@ use Carp qw(croak);
 use Digest::MD5 ();
 use Encode qw(encode);
 use Getopt::Long ();
+use HTML::Parser;
 use JSON ();
 use LWP::UserAgent;
 use Pod::Usage;
