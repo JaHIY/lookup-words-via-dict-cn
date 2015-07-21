@@ -131,7 +131,7 @@ sub look_up {
 }
 
 sub main {
-    @ARGV = map { decode( locale => $_, 1 ) } @ARGV;
+    my @argv = map { decode( locale => $_, 1 ) } @_;
     if ( -t ) {
         binmode(STDIN, ":encoding(console_in)");
         binmode(STDOUT, ":encoding(console_out)");
@@ -140,7 +140,7 @@ sub main {
     my %option_of;
     my $getopt = Getopt::Long::Parser->new;
     croak 'Cannot parse options!' if not $getopt->getoptionsfromarray(
-        \@_,
+        \@argv,
         \%option_of,
         'help|h|?',
         'man',
@@ -151,7 +151,7 @@ sub main {
     if ( $option_of{'man'} ) {
         pod2usage(-verbose => 2);
     }
-    if ( @ARGV == 0 ) {
+    if ( @argv == 0 ) {
         my $term = Term::ReadLine->new('Dict.cn Console Version');
         $term->ornaments(0);
         while ( defined( my $word = $term->readline('> ') ) ) {
@@ -159,7 +159,7 @@ sub main {
             $term->addhistory($word);
         }
     } else {
-        my ( $word ) = join $SPACE, @ARGV;
+        my ( $word ) = join $SPACE, @argv;
         look_up( $word );
     }
 }
