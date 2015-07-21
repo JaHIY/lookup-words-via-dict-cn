@@ -124,7 +124,7 @@ sub look_up {
         print $word;
         print color 'reset';
         print color 'bold';
-        print ' not found!', "\n\n";
+        print 'not found!', "\n\n";
         print 'Are you looking for:', "\n";
         print color 'reset';
         color_print( $dict_hash_ref->{'g'} );
