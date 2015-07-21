@@ -2,13 +2,14 @@
 
 use strict;
 use warnings;
-use utf8::all;
+use utf8;
 use autodie;
 use 5.010;
 
 use Carp qw(croak);
 use Digest::MD5 ();
-use Encode qw(encode);
+use Encode qw(encode decode);
+use Encode::Locale;
 use Getopt::Long ();
 use HTML::Parser;
 use JSON ();
@@ -130,6 +131,12 @@ sub look_up {
 }
 
 sub main {
+    @ARGV = map { decode( locale => $_, 1 ) } @ARGV;
+    if ( -t ) {
+        binmode(STDIN, ":encoding(console_in)");
+        binmode(STDOUT, ":encoding(console_out)");
+        binmode(STDERR, ":encoding(console_out)");
+    }
     my %option_of;
     my $getopt = Getopt::Long::Parser->new;
     croak 'Cannot parse options!' if not $getopt->getoptionsfromarray(
