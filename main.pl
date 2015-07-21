@@ -92,6 +92,7 @@ sub color_print {
     );
     $input =~ s/\R//g;
     $p->parse( $input );
+    $p->eof;
 }
 
 sub look_up {
@@ -127,6 +128,7 @@ sub look_up {
         print 'Are you looking for:', "\n";
         print color 'reset';
         color_print( $dict_hash_ref->{'g'} );
+        print "\n";
     }
 }
 
@@ -154,7 +156,7 @@ sub main {
     if ( @argv == 0 ) {
         my $term = Term::ReadLine->new('Dict.cn Console Version');
         $term->ornaments(0);
-        while ( defined( my $word = $term->readline('> ') ) ) {
+        while ( defined( my $word = decode( locale => $term->readline('> '), 1 ) ) ) {
             look_up( $word, \%option_of );
             $term->addhistory($word);
         }
