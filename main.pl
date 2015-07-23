@@ -98,15 +98,15 @@ sub color_print {
 sub look_up {
     my ( $word ) = @_;
     my $dict_hash_ref = get_json_for_definition_of( $word );
+    print color 'bold';
+    print 'Define ';
+    print color 'yellow';
+    print $word;
+    print color 'reset';
+    print color 'bold';
+    print ':', "\n";
+    print color 'reset';
     if ( defined $dict_hash_ref->{'e'} ) {
-        print color 'bold';
-        print 'Define ';
-        print color 'yellow';
-        print $word;
-        print color 'reset';
-        print color 'bold';
-        print ':', "\n";
-        print color 'reset';
         color_print( $dict_hash_ref->{'e'} );
         print "\n";
     }
@@ -119,12 +119,7 @@ sub look_up {
     }
     if ( defined $dict_hash_ref->{'g'} ) {
         print color 'bold';
-        print 'Sorry, ';
-        print color 'yellow';
-        print $word;
-        print color 'reset';
-        print color 'bold';
-        print 'not found!', "\n\n";
+        print 'Sorry, word not found!', "\n\n";
         print 'Are you looking for:', "\n";
         print color 'reset';
         color_print( $dict_hash_ref->{'g'} );
