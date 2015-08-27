@@ -130,9 +130,9 @@ sub look_up {
 sub main {
     my @argv = map { decode( locale => $_, 1 ) } @_;
     if ( -t ) {
-        binmode(STDIN, ":encoding(console_in)");
-        binmode(STDOUT, ":encoding(console_out)");
-        binmode(STDERR, ":encoding(console_out)");
+        binmode(STDIN, ':encoding(console_in)');
+        binmode(STDOUT, ':encoding(console_out)');
+        binmode(STDERR, ':encoding(console_out)');
     }
     my %option_of;
     my $getopt = Getopt::Long::Parser->new;
